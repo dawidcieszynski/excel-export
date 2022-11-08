@@ -41,7 +41,7 @@ class OldExcelDataFormatter extends ExcelDataFormatter
 
         $excel = $this->getPhpExcelObject($set);
 
-        $fileData = $this->getFileData($excel, 'Excel5');
+        $fileData = $this->getFileData($excel, 'Xls');
 
         return $fileData;
     }
