@@ -6,7 +6,7 @@
  * (XLSX).
  *
  * This class can be extended to export to other format supported by
- * {@link https://github.com/PHPOffice/PHPExcel PHPExcel}.
+ * {@link https://github.com/PHPOffice/\PhpOffice\PhpSpreadsheet\Spreadsheet \PhpOffice\PhpSpreadsheet\Spreadsheet}.
  *
  * @author Firebrand <hello@firebrand.nz>
  * @license MIT
@@ -61,7 +61,7 @@ class ExcelDataFormatter extends DataFormatter
 
         $excel = $this->getPhpExcelObject($set);
 
-        $fileData = $this->getFileData($excel, 'Excel2007');
+        $fileData = $this->getFileData($excel, 'Xlsx');
 
         return $fileData;
     }
@@ -117,9 +117,9 @@ class ExcelDataFormatter extends DataFormatter
     }
 
     /**
-     * Generate a {@link PHPExcel} for the provided DataObject List
+     * Generate a {@link \PhpOffice\PhpSpreadsheet\Spreadsheet} for the provided DataObject List
      * @param  SS_List $set List of DataObjects
-     * @return PHPExcel
+     * @return \PhpOffice\PhpSpreadsheet\Spreadsheet
      */
     public function getPhpExcelObject(SS_List $set)
     {
@@ -151,7 +151,7 @@ class ExcelDataFormatter extends DataFormatter
             for ($i = 1; $i <= $col; $i++) {
                 $sheet
                     ->getColumnDimension(
-                        PHPExcel_Cell::stringFromColumnIndex($i)
+                        \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($i)
                     )
                     ->setAutoSize(true);
             }
@@ -162,10 +162,10 @@ class ExcelDataFormatter extends DataFormatter
     }
 
     /**
-     * Initialize a new {@link PHPExcel} object based on the provided
+     * Initialize a new {@link \PhpOffice\PhpSpreadsheet\Spreadsheet} object based on the provided
      * {@link DataObjectInterface} interface.
      * @param  DataObjectInterface $do
-     * @return PHPExcel
+     * @return \PhpOffice\PhpSpreadsheet\Spreadsheet
      */
     protected function setupExcel(DataObjectInterface $do)
     {
@@ -178,7 +178,7 @@ class ExcelDataFormatter extends DataFormatter
         $plural = $do ? $do->i18n_plural_name() : '';
 
         // Create the Spread sheet
-        $excel = new PHPExcel();
+        $excel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
 
         $excel->getProperties()
             ->setCreator($creator)
@@ -192,7 +192,7 @@ class ExcelDataFormatter extends DataFormatter
                 'firebrandhq.EXCELEXPORT',
                 'List of {plural} exported out of a SilverStripe website',
                 'Description for the spread sheet export',
-                array('pluralr' => $plural)
+                array('plural' => $plural)
             ));
 
         // Give a name to the sheet
@@ -204,13 +204,13 @@ class ExcelDataFormatter extends DataFormatter
     }
 
     /**
-     * Add an header row to a {@link PHPExcel_Worksheet}.
-     * @param  PHPExcel_Worksheet $sheet
+     * Add an header row to a {@link \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet}.
+     * @param  \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet
      * @param  array              $fields List of fields
      * @param  DataObjectInterface  $do
-     * @return PHPExcel_Worksheet
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
      */
-    protected function headerRow(PHPExcel_Worksheet &$sheet, array $fields, DataObjectInterface $do)
+    protected function headerRow(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet &$sheet, array $fields, DataObjectInterface $do)
     {
         // Counter
         $row = 1;
@@ -227,7 +227,7 @@ class ExcelDataFormatter extends DataFormatter
 
         // Get the last column
         $col--;
-        $endcol = PHPExcel_Cell::stringFromColumnIndex($col);
+        $endcol = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col);
 
         // Set Autofilters and Header row style
         $sheet->setAutoFilter("A1:{$endcol}1");
@@ -238,15 +238,15 @@ class ExcelDataFormatter extends DataFormatter
     }
 
     /**
-     * Add a new row to a {@link PHPExcel_Worksheet} based of a
+     * Add a new row to a {@link \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet} based of a
      * {@link DataObjectInterface}
-     * @param PHPExcel_Worksheet  $sheet
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet  $sheet
      * @param DataObjectInterface $item
      * @param array               $fields List of fields to include
-     * @return PHPExcel_Worksheet
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
      */
     protected function addRow(
-        PHPExcel_Worksheet &$sheet,
+        \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet &$sheet,
         DataObjectInterface $item,
         array $fields
     ) {
@@ -268,17 +268,17 @@ class ExcelDataFormatter extends DataFormatter
     }
 
     /**
-     * Generate a string representation of an {@link PHPExcel} spread sheet
+     * Generate a string representation of an {@link \PhpOffice\PhpSpreadsheet\Spreadsheet} spread sheet
      * suitable for output to the browser.
-     * @param  PHPExcel $excel
+     * @param  \PhpOffice\PhpSpreadsheet\Spreadsheet $excel
      * @param  string   $format Format to use when outputting the spreadsheet.
      * Must be compatible with the format expected by
-     * {@link PHPExcel_IOFactory::createWriter}.
+     * {@link \PhpOffice\PhpSpreadsheet\IOFactory::createWriter}.
      * @return string
      */
-    protected function getFileData(PHPExcel $excel, $format)
+    protected function getFileData(\PhpOffice\PhpSpreadsheet\Spreadsheet $excel, $format)
     {
-        $writer = PHPExcel_IOFactory::createWriter($excel, $format);
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($excel, $format);
         ob_start();
         $writer->save('php://output');
         $fileData = ob_get_clean();

@@ -9,7 +9,7 @@ This module is built by extending the standard [SilverStripe DataFormatter](http
 ## Requirements
 
  * [silverstripe/cms](https://github.com/silverstripe/silverstripe-cms) >=3.1
- * [phpoffice/phpexcel](https://github.com/PHPOffice/PHPExcel) >=1.8
+ * [phpoffice/phpexcel](https://github.com/PHPOffice/\PhpOffice\PhpSpreadsheet\Spreadsheet) >=1.8
 
 ## Suggestions
 * [silverstripe/restfulserver](https://github.com/silverstripe/silverstripe-restfulserver) >=3.1
@@ -45,7 +45,7 @@ $filedata = $formatter->convertDataObjectSet(Member::get());
 
 `convertDataObjectSet()` and `convertDataObject()` will automatically set the _Content-Type_ HTTP header to an appropriate Mime Type.
 
-You can also retrieve the underlying _PHPExcel_ object and export your DataObject set to whatever format supported by _PHPExcel_.
+You can also retrieve the underlying _\PhpOffice\PhpSpreadsheet\Spreadsheet_ object and export your DataObject set to whatever format supported by _\PhpOffice\PhpSpreadsheet\Spreadsheet_.
 
 ```
 // Get your Data
@@ -53,7 +53,7 @@ $formatter = new ExcelDataFormatter();
 $excel = $formatter->getPhpExcelObject(SiteTree::get());
 
 // Set up a writer
-$writer = PHPExcel_IOFactory::createWriter($excel, 'HTML');
+$writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($excel, 'HTML');
 
 // Save the file somewhere on the server
 $writer->save('/tmp/sitetree_list.html');
